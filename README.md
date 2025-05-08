@@ -1,1 +1,1 @@
-# adaptive_classifier
+# User preference based adaptive classifier

@@ -2,3 +2,6 @@ numpy
 ipykernel
 nbdev
 ultralytics
+datasets
+transformers
+scikit-learn

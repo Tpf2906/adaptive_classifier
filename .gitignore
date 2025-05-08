@@ -1,0 +1,7 @@
+# Ignore datasets folder
+dataset/
+coco/
+dataset_cap/
+models/
+pca_model.joblib
+clip_features/
