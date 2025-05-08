@@ -5,3 +5,4 @@ ultralytics
 datasets
 transformers
 scikit-learn
+xgboost
