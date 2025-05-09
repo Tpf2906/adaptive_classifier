@@ -1,5 +1,5 @@
 from sklearn.neighbors import KNeighborsClassifier
-from base_classifier import BaseClassifier
+from .base_classifier import BaseClassifier
 
 class KNNClassifier(BaseClassifier):
     def __init__(self, n_neighbors=5, name="KNN"):

@@ -39,13 +39,27 @@ class BaseClassifier(ABC):
             raise NotImplementedError("Subclasses must define self.model.")
         return self.model.predict(X)
     
+    def classify_proba(self, X):
+        """
+        Predict class probabilities for input features.
+
+        Parameters:
+        - X: Input features
+
+        Returns:
+        - Predicted class probabilities
+        """
+        if self.model is None:
+            raise NotImplementedError("Subclasses must define self.model.")
+        return self.model.predict_proba(X)
+    
     def save(self, model_dir="models"):
         """
         Save the trained model to disk using the name attribute.
         """
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
-        filepath = os.path.join(model_dir, f"{self.name}.joblib")
+        filepath = os.path.join(model_dir, f"{self._name}.joblib")
         joblib.dump(self.model, filepath)
         print(f"Model saved to {filepath}")
 
@@ -53,7 +67,7 @@ class BaseClassifier(ABC):
         """
         Load a trained model from disk using the name attribute.
         """
-        filepath = os.path.join(model_dir, f"{self.name}.joblib")
+        filepath = os.path.join(model_dir, f"{self._name}.joblib")
         if os.path.exists(filepath):
             self.model = joblib.load(filepath)
             print(f"Model loaded from {filepath}")

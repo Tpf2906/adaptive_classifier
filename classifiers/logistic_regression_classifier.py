@@ -1,5 +1,5 @@
 from sklearn.linear_model import LogisticRegression
-from base_classifier import BaseClassifier
+from .base_classifier import BaseClassifier
 
 class LogisticRegressionClassifier(BaseClassifier):
     def __init__(self, C=1.0, max_iter=1000, name="LogisticRegression"):

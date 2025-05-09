@@ -1,5 +1,5 @@
 from sklearn.naive_bayes import GaussianNB
-from base_classifier import BaseClassifier
+from .base_classifier import BaseClassifier
 
 class NaiveBayesClassifier(BaseClassifier):
     def __init__(self, name="NaiveBayes"):

@@ -5,3 +5,5 @@ dataset_cap/
 models/
 pca_model.joblib
 clip_features/
+scaler_model.joblib
+classifiers/__pycache__/

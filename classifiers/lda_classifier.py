@@ -1,5 +1,5 @@
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from base_classifier import BaseClassifier
+from .base_classifier import BaseClassifier
 
 class LDAClassifier(BaseClassifier):
     def __init__(self, solver='svd', priors=None, shrinkage=None, name="LDA"):

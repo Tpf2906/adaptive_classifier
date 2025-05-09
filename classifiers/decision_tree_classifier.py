@@ -1,5 +1,5 @@
 from sklearn.tree import DecisionTreeClassifier
-from base_classifier import BaseClassifier
+from .base_classifier import BaseClassifier
 
 class DecisionTreeClassifierWrapper(BaseClassifier):
     def __init__(self, max_depth=None, random_state=42, name="DecisionTree"):

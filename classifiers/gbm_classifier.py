@@ -1,8 +1,8 @@
 from sklearn.ensemble import GradientBoostingClassifier
-from base_classifier import BaseClassifier
+from .base_classifier import BaseClassifier
 
 class GBMClassifier(BaseClassifier):
-    def __init__(self, n_estimators=300, learning_rate=0.1, max_depth=5, name="GBM"):
+    def __init__(self, n_estimators=50, learning_rate=0.1, max_depth=3, name="GBM"):
         """
         Initializes the Gradient Boosting Classifier.
 
