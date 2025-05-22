@@ -6,3 +6,5 @@ datasets
 transformers
 scikit-learn
 xgboost
+shap
+lime

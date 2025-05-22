@@ -9,3 +9,4 @@ from .gbm_classifier import GBMClassifier
 from .adaboost_classifier import AdaBoostClassifierWrapper as AdaBoostClassifier
 from .xgboost_classifier import XGBoostClassifier
 from .lda_classifier import LDAClassifier
+from .base_classifier import BaseClassifier

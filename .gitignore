@@ -3,7 +3,11 @@ dataset/
 coco/
 dataset_cap/
 models/
-pca_model.joblib
 clip_features/
-scaler_model.joblib
-classifiers/__pycache__/
+
+# Ignore all .joblib files anywhere
+*.joblib
+
+# Ignore all __pycache__ folders recursively
+__pycache__/
+**/__pycache__/

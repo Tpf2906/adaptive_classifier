@@ -1,0 +1,160 @@
+{
+    "models_pca": {
+        "SVM": {
+            "top-5 accuracy": 0.9123425692695214,
+            "accuracy": 0.6246851385390428,
+            "recall": 0.6246851385390428,
+            "f1-score": 0.6076022118082828,
+            "inference_time_sec": 2.693723678588867
+        },
+        "RBF": {
+            "top-5 accuracy": 0.9173803526448363,
+            "accuracy": 0.6448362720403022,
+            "recall": 0.6448362720403022,
+            "f1-score": 0.595426109653062,
+            "inference_time_sec": 5.087532997131348
+        },
+        "Random Forest": {
+            "top-5 accuracy": 0.8443324937027707,
+            "accuracy": 0.44080604534005036,
+            "recall": 0.44080604534005036,
+            "f1-score": 0.3019783822751438,
+            "inference_time_sec": 0.05563831329345703
+        },
+        "Naive Bayes": {
+            "top-5 accuracy": 0.8634760705289672,
+            "accuracy": 0.5556675062972293,
+            "recall": 0.5556675062972293,
+            "f1-score": 0.5598542199524164,
+            "inference_time_sec": 0.17511200904846191
+        },
+        "Logistic Regression": {
+            "top-5 accuracy": 0.8811083123425693,
+            "accuracy": 0.617632241813602,
+            "recall": 0.617632241813602,
+            "f1-score": 0.6065729342020427,
+            "inference_time_sec": 0.004371166229248047
+        },
+        "LDA": {
+            "top-5 accuracy": 0.8977329974811084,
+            "accuracy": 0.5889168765743074,
+            "recall": 0.5889168765743074,
+            "f1-score": 0.5862809785597358,
+            "inference_time_sec": 0.004052400588989258
+        },
+        "KNN": {
+            "top-5 accuracy": 0.7934508816120907,
+            "accuracy": 0.6151133501259446,
+            "recall": 0.6151133501259446,
+            "f1-score": 0.583123513359876,
+            "inference_time_sec": 0.17526507377624512
+        },
+        "Decision Tree": {
+            "top-5 accuracy": 0.4221662468513854,
+            "accuracy": 0.4125944584382871,
+            "recall": 0.4125944584382871,
+            "f1-score": 0.41223895279549766,
+            "inference_time_sec": 0.0010402202606201172
+        },
+        "AdaBoost": {
+            "top-5 accuracy": 0.6085642317380353,
+            "accuracy": 0.3612090680100756,
+            "recall": 0.3612090680100756,
+            "f1-score": 0.19365583860082694,
+            "inference_time_sec": 0.04153180122375488
+        },
+        "Gradient Boosting": {
+            "top-5 accuracy": 0.745088161209068,
+            "accuracy": 0.46700251889168765,
+            "recall": 0.46700251889168765,
+            "f1-score": 0.4384078701932947,
+            "inference_time_sec": 0.04961681365966797
+        },
+        "XGBoost": {
+            "top-5 accuracy": 0.8644836272040303,
+            "accuracy": 0.6025188916876574,
+            "recall": 0.6025188916876574,
+            "f1-score": 0.555606848839155,
+            "inference_time_sec": 0.023005247116088867
+        }
+    },
+    "models_lime": {
+        "SVM": {
+            "top-5 accuracy": 0.9118387909319899,
+            "accuracy": 0.6246851385390428,
+            "recall": 0.6246851385390428,
+            "f1-score": 0.6076022118082828,
+            "inference_time_sec": 2.816912889480591
+        },
+        "RBF": {
+            "top-5 accuracy": 0.9198992443324937,
+            "accuracy": 0.6448362720403022,
+            "recall": 0.6448362720403022,
+            "f1-score": 0.595426109653062,
+            "inference_time_sec": 5.26594352722168
+        },
+        "Random Forest": {
+            "top-5 accuracy": 0.8443324937027707,
+            "accuracy": 0.44080604534005036,
+            "recall": 0.44080604534005036,
+            "f1-score": 0.3019783822751438,
+            "inference_time_sec": 0.0454256534576416
+        },
+        "Naive Bayes": {
+            "top-5 accuracy": 0.8634760705289672,
+            "accuracy": 0.5556675062972293,
+            "recall": 0.5556675062972293,
+            "f1-score": 0.5598542199524164,
+            "inference_time_sec": 0.13660788536071777
+        },
+        "Logistic Regression": {
+            "top-5 accuracy": 0.8811083123425693,
+            "accuracy": 0.617632241813602,
+            "recall": 0.617632241813602,
+            "f1-score": 0.6065729342020427,
+            "inference_time_sec": 0.0036933422088623047
+        },
+        "LDA": {
+            "top-5 accuracy": 0.8977329974811084,
+            "accuracy": 0.5889168765743074,
+            "recall": 0.5889168765743074,
+            "f1-score": 0.5862809785597358,
+            "inference_time_sec": 0.0013911724090576172
+        },
+        "KNN": {
+            "top-5 accuracy": 0.7934508816120907,
+            "accuracy": 0.6151133501259446,
+            "recall": 0.6151133501259446,
+            "f1-score": 0.583123513359876,
+            "inference_time_sec": 0.1587986946105957
+        },
+        "Decision Tree": {
+            "top-5 accuracy": 0.4221662468513854,
+            "accuracy": 0.4125944584382871,
+            "recall": 0.4125944584382871,
+            "f1-score": 0.41223895279549766,
+            "inference_time_sec": 0.0009856224060058594
+        },
+        "AdaBoost": {
+            "top-5 accuracy": 0.6085642317380353,
+            "accuracy": 0.3612090680100756,
+            "recall": 0.3612090680100756,
+            "f1-score": 0.19365583860082694,
+            "inference_time_sec": 0.04111123085021973
+        },
+        "Gradient Boosting": {
+            "top-5 accuracy": 0.7420654911838791,
+            "accuracy": 0.4690176322418136,
+            "recall": 0.4690176322418136,
+            "f1-score": 0.44493569575972763,
+            "inference_time_sec": 0.05802583694458008
+        },
+        "XGBoost": {
+            "top-5 accuracy": 0.8644836272040303,
+            "accuracy": 0.6025188916876574,
+            "recall": 0.6025188916876574,
+            "f1-score": 0.555606848839155,
+            "inference_time_sec": 0.025890827178955078
+        }
+    }
+}
