@@ -4,6 +4,7 @@ import os
 import joblib
 from sklearn.preprocessing import LabelEncoder
 from .base_classifier import BaseClassifier
+from sklearn.calibration import CalibratedClassifierCV
 
 
 class XGBoostClassifier(BaseClassifier):
@@ -32,7 +33,7 @@ class XGBoostClassifier(BaseClassifier):
         y_encoded = self.label_encoder.transform(y_train)
 
         # Initialize and fit the model
-        self.model = xgb.XGBClassifier(
+        model = xgb.XGBClassifier(
             objective="multi:softprob",
             num_class=len(self.seen_classes),
             n_estimators=self.n_estimators,
@@ -41,5 +42,6 @@ class XGBoostClassifier(BaseClassifier):
             use_label_encoder=False,
             eval_metric="mlogloss"
         )
+        self.model = CalibratedClassifierCV(model, method='isotonic', cv=3)
         self.model.fit(X_train, y_encoded)
 

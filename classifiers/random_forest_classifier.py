@@ -1,5 +1,6 @@
 from sklearn.ensemble import RandomForestClassifier as RFC
 from .base_classifier import BaseClassifier
+from sklearn.calibration import CalibratedClassifierCV
 
 class RandomForestClassifierWrapper(BaseClassifier):
     def __init__(self, n_estimators=200, max_depth=10, random_state=42, name="RandomForest"):
@@ -12,9 +13,10 @@ class RandomForestClassifierWrapper(BaseClassifier):
         - random_state: For reproducibility
         """
         super().__init__(name=name)
-        self.model = RFC(
+        model = RFC(
             n_estimators=n_estimators,
             max_depth=max_depth,
             random_state=random_state
         )
+        self.model = CalibratedClassifierCV(model, method='isotonic', cv=3)
 

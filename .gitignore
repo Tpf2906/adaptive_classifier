@@ -2,7 +2,10 @@
 dataset/
 coco/
 dataset_cap/
-models/
+models_lime_cal/
+models_lime/
+models_pca_cal/
+models_pca/
 clip_features/
 
 # Ignore all .joblib files anywhere

@@ -1,11 +1,11 @@
 # weight_generator.py
-from ensembler import EnsemblerClassifier
+from .ensembler import EnsemblerClassifier
 from sklearn.metrics import (
     accuracy_score, recall_score, f1_score, precision_score, roc_auc_score,
     top_k_accuracy_score
 )
 import numpy as np
-from time import time
+import time
 
 def get_ensemble_metrics(ensemble: EnsemblerClassifier, X_val, y_val):
     start_time = time.time()
@@ -19,7 +19,7 @@ def get_ensemble_metrics(ensemble: EnsemblerClassifier, X_val, y_val):
             # AUC-ROC computation — assumes multi-class OVR
             auc_roc = roc_auc_score(y_val, y_proba, multi_class='ovr', average='weighted', labels=np.arange(1, 91))
         except Exception as e:
-            print(f"Probability-based metrics not available for ensemble: {e}")
+            #(f"Probability-based metrics not available for ensemble: {e}")
             top5_acc = None
             auc_roc = None
     else:

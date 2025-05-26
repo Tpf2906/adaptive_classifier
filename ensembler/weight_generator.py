@@ -2,11 +2,11 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ensembler import EnsemblerClassifier
+from .ensembler import EnsemblerClassifier
 import numpy as np
 from sklearn.metrics import make_scorer
 from time import time
-from utils import get_ensemble_metrics
+from .utils import get_ensemble_metrics
 
 class WeightGeneratorNN(nn.Module):
     def __init__(self, input_dim=7, output_dim=11, hidden_dim=32):
@@ -21,7 +21,7 @@ class WeightGeneratorNN(nn.Module):
         return F.softmax(self.output_layer(x), dim=1)
 
 
-def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, input_params):
+def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, weights):
     """
     Evaluates the ensemble based on user preferences (input_params).
 
@@ -32,9 +32,6 @@ def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, input_params)
     Returns:
     - score: scalar reward value for use in training
     """
-    # Softmax to normalize user preferences
-    metric_weights = F.softmax(input_params, dim=1).detach().cpu().numpy().flatten()
-
     # Get metrics
     acc, recall, f1, precision, top5_acc, auc_roc, elapsed_time = get_ensemble_metrics(
         ensemble, X_val, y_val
@@ -45,7 +42,8 @@ def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, input_params)
 
     # Final score as weighted arithmetic mean
     metrics = [acc, recall, f1, precision, top5_acc, auc_roc, time_score]
-    score = np.dot(metric_weights, metrics)
+    print(f"Metrics: {metrics}")
+    score = np.dot(weights, metrics)
     
     # Weighted Harmonic mean
     # denominator = sum(metric_weights[i] / (metrics[i] + 1e-8) for i in range(7))
@@ -54,7 +52,7 @@ def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, input_params)
     return score
 
 
-def train_step(nn_model: WeightGeneratorNN, optimizer, input_params, X_val, y_val, base_classifiers):
+def train_step(nn_model: WeightGeneratorNN, optimizer, input_params, X_val, y_val, base_classifiers, device=None):
     """
     Trains the neural net for one step based on ensemble performance.
 
@@ -67,7 +65,7 @@ def train_step(nn_model: WeightGeneratorNN, optimizer, input_params, X_val, y_va
     optimizer.zero_grad()
 
     # Generate weights from NN
-    weights = nn_model(input_params)
+    weights = nn_model(input_params.to(device))
     weights_np = weights.detach().cpu().numpy().flatten()
 
     # Create ensemble with generated weights
@@ -75,10 +73,10 @@ def train_step(nn_model: WeightGeneratorNN, optimizer, input_params, X_val, y_va
     ensemble = EnsemblerClassifier(clf_with_weights)
 
     # Evaluate performance
-    score = evaluate_ensemble(ensemble, X_val, y_val, input_params)
+    score = evaluate_ensemble(ensemble, X_val, y_val, weights_np)
 
     # Convert score to loss (maximize score → minimize -score)
-    loss = -torch.tensor(score, requires_grad=True)
+    loss = -torch.tensor(score,dtype=torch.float32, device=device, requires_grad=True)
 
     loss.backward()
     optimizer.step()

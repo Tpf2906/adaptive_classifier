@@ -28,6 +28,8 @@ class EnsemblerClassifier:
         weighted_probs = None
 
         for clf, weight in zip(self.classifiers, self.weights):
+            if weight == 0:
+                continue
             probs = clf.classify_proba(X)
             if weighted_probs is None:
                 weighted_probs = weight * probs
