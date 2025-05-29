@@ -4,6 +4,7 @@ coco/
 dataset_cap/
 models_lime_cal/
 models_lime/
+models_pca_cal_sig/
 models_pca_cal/
 models_pca/
 clip_features/

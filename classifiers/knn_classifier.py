@@ -13,4 +13,4 @@ class KNNClassifier(BaseClassifier):
         """
         super().__init__(name=name)
         model = KNeighborsClassifier(n_neighbors=n_neighbors)
-        self.model = CalibratedClassifierCV(model, method='isotonic', cv=3)
+        self.model = CalibratedClassifierCV(model, method='sigmoid', cv=3)

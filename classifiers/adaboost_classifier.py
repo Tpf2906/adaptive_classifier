@@ -17,4 +17,4 @@ class AdaBoostClassifierWrapper(BaseClassifier):
             n_estimators=n_estimators,
             learning_rate=learning_rate
         )
-        self.model = CalibratedClassifierCV(model, method='isotonic', cv=3)
+        self.model = CalibratedClassifierCV(model, method='sigmoid', cv=3)

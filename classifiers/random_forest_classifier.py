@@ -18,5 +18,5 @@ class RandomForestClassifierWrapper(BaseClassifier):
             max_depth=max_depth,
             random_state=random_state
         )
-        self.model = CalibratedClassifierCV(model, method='isotonic', cv=3)
+        self.model = CalibratedClassifierCV(model, method='sigmoid', cv=3)
 

@@ -9,16 +9,27 @@ from time import time
 from .utils import get_ensemble_metrics
 
 class WeightGeneratorNN(nn.Module):
-    def __init__(self, input_dim=7, output_dim=11, hidden_dim=32):
+    def __init__(self, input_dim=7, hidden_dim=32, num_classifiers=11):
         super(WeightGeneratorNN, self).__init__()
         self.fc1 = nn.Linear(input_dim, hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)
-        self.output_layer = nn.Linear(hidden_dim, output_dim)
+
+        self.activation_layer = nn.Linear(hidden_dim, num_classifiers)
+        self.weight_layer = nn.Linear(hidden_dim, num_classifiers)
 
     def forward(self, x):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        return F.softmax(self.output_layer(x), dim=1)
+
+        # Use straight-through estimator for binary activation
+        logits = self.activation_layer(x)
+        probs = torch.sigmoid(logits)
+        hard = (probs > 0.5).float()
+        activation = (hard - probs).detach() + probs  # straight-through
+
+        weights = F.softmax(self.weight_layer(x), dim=1)
+
+        return activation, weights
 
 
 def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, weights):
@@ -64,19 +75,33 @@ def train_step(nn_model: WeightGeneratorNN, optimizer, input_params, X_val, y_va
     nn_model.train()
     optimizer.zero_grad()
 
-    # Generate weights from NN
-    weights = nn_model(input_params.to(device))
+    # Forward pass
+    activation, weights = nn_model(input_params.to(device))  # Both are shape (1, 11)
+
+    # Ensure at least one classifier is active
+    if activation.sum().item() < 1:
+        # Force the classifier with the highest activation probability to be active
+        max_idx = torch.argmax(activation)
+        activation[0][max_idx] = 1.0
+
+    # Detach and convert to NumPy
+    activation_np = activation.detach().cpu().numpy().flatten()
     weights_np = weights.detach().cpu().numpy().flatten()
 
-    # Create ensemble with generated weights
-    clf_with_weights = list(zip(base_classifiers, weights_np))
-    ensemble = EnsemblerClassifier(clf_with_weights)
+    # Filter active classifiers and their weights
+    selected = [(clf, weight) for clf, act, weight in zip(base_classifiers, activation_np, weights_np) if act >= 0.5]
 
-    # Evaluate performance
-    score = evaluate_ensemble(ensemble, X_val, y_val, weights_np)
+    # Normalize selected weights
+    total_weight = sum(w for _, w in selected)
+    if total_weight > 0:
+        selected = [(clf, w / total_weight) for clf, w in selected]
+
+    # Build and evaluate ensemble
+    ensemble = EnsemblerClassifier(selected)
+    score = evaluate_ensemble(ensemble, X_val, y_val, np.array([w for _, w in selected]))
 
     # Convert score to loss (maximize score → minimize -score)
-    loss = -torch.tensor(score,dtype=torch.float32, device=device, requires_grad=True)
+    loss = -torch.tensor(score, dtype=torch.float32, device=device, requires_grad=True)
 
     loss.backward()
     optimizer.step()

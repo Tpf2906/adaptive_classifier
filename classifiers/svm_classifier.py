@@ -15,6 +15,6 @@ class SVMClassifier(BaseClassifier):
         """
         super().__init__(name=name)
         model = SVC(kernel=kernel, C=C, gamma=gamma, probability=True)
-        self.model = CalibratedClassifierCV(model, method='isotonic', cv=3)
+        self.model = CalibratedClassifierCV(model, method='sigmoid', cv=3)
         
         

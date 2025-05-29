@@ -42,6 +42,6 @@ class XGBoostClassifier(BaseClassifier):
             use_label_encoder=False,
             eval_metric="mlogloss"
         )
-        self.model = CalibratedClassifierCV(model, method='isotonic', cv=3)
+        self.model = CalibratedClassifierCV(model, method='sigmoid', cv=3)
         self.model.fit(X_train, y_encoded)
 

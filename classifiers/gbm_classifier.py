@@ -19,4 +19,4 @@ class GBMClassifier(BaseClassifier):
             learning_rate=learning_rate,
             max_depth=max_depth
         )
-        self.model = CalibratedClassifierCV(model, method='isotonic', cv=3)
+        self.model = CalibratedClassifierCV(model, method='sigmoid', cv=3)

@@ -43,5 +43,5 @@ class EnsemblerClassifier:
         Predict final class using highest combined probability.
         """
         combined_proba = self.classify_proba(X)
-        return np.argmax(combined_proba, axis=1)
+        return np.argmax(combined_proba, axis=1) + 1
 
