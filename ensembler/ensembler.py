@@ -3,13 +3,15 @@ from typing import List, Tuple
 from classifiers import BaseClassifier
 
 class EnsemblerClassifier:
-    def __init__(self, classifiers_with_weights: List[Tuple[BaseClassifier, float]]):
+    def __init__(self, classifiers_with_weights):
         """
         Ensemble classifier using weighted average of predicted probabilities.
 
         Parameters:
         - classifiers_with_weights: List of (classifier_instance, weight)
         """
+        classifiers_with_weights = list(classifiers_with_weights)  # <- this line ensures safety
+
         self.classifiers = [clf for clf, _ in classifiers_with_weights]
         self.weights = np.array([w for _, w in classifiers_with_weights], dtype=np.float32)
 

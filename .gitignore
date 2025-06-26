@@ -8,6 +8,9 @@ models_pca_cal_sig/
 models_pca_cal/
 models_pca/
 clip_features/
+nn_models/
+final_weight_generator_hm.pt
+final_weight_generator.pt
 
 # Ignore all .joblib files anywhere
 *.joblib

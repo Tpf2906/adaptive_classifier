@@ -20,19 +20,13 @@ class WeightGeneratorNN(nn.Module):
     def forward(self, x):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-
-        # Use straight-through estimator for binary activation
-        logits = self.activation_layer(x)
-        probs = torch.sigmoid(logits)
-        hard = (probs > 0.5).float()
-        activation = (hard - probs).detach() + probs  # straight-through
-
-        weights = F.softmax(self.weight_layer(x), dim=1)
-
-        return activation, weights
+        activation_logits = self.activation_layer(x)
+        weight_scores = F.softmax(self.weight_layer(x), dim=1)
+        return activation_logits, weight_scores
 
 
-def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, weights):
+
+def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, input_params):
     """
     Evaluates the ensemble based on user preferences (input_params).
 
@@ -53,17 +47,18 @@ def evaluate_ensemble(ensemble: EnsemblerClassifier, X_val, y_val, weights):
 
     # Final score as weighted arithmetic mean
     metrics = [acc, recall, f1, precision, top5_acc, auc_roc, time_score]
-    print(f"Metrics: {metrics}")
-    score = np.dot(weights, metrics)
+    metric_weights = input_params.cpu().numpy().flatten()
+    #print(f"Metrics: {metrics}")
+    #score = np.dot(metric_weights, metrics)
     
     # Weighted Harmonic mean
-    # denominator = sum(metric_weights[i] / (metrics[i] + 1e-8) for i in range(7))
-    # score = metric_weights.sum() / denominator
+    denominator = sum(metric_weights[i] / (metrics[i] + 1e-8) for i in range(7))
+    score = metric_weights.sum() / denominator
 
     return score
 
 
-def train_step(nn_model: WeightGeneratorNN, optimizer, input_params, X_val, y_val, base_classifiers, device=None):
+def train_step(nn_model: WeightGeneratorNN, optimizer, input_params, X_val, y_val, base_classifiers, device=None, sparsity_coeff=0.01):
     """
     Trains the neural net for one step based on ensemble performance.
 
@@ -71,39 +66,65 @@ def train_step(nn_model: WeightGeneratorNN, optimizer, input_params, X_val, y_va
     - input_params: torch.Tensor of shape (1, 7)
     - X_val, y_val: Validation data (NumPy arrays)
     - base_classifiers: list of 11 classifiers
+    - sparsity_coeff: float, strength of regularization to reduce number of active classifiers
     """
     nn_model.train()
     optimizer.zero_grad()
 
+    # Move input to device
+    input_params = input_params.to(device)
+
     # Forward pass
-    activation, weights = nn_model(input_params.to(device))  # Both are shape (1, 11)
+    x = F.relu(nn_model.fc1(input_params))
+    x = F.relu(nn_model.fc2(x))
+
+    activation_logits = nn_model.activation_layer(x)
+    weight_logits = nn_model.weight_layer(x)
+
+    activation_probs = torch.sigmoid(activation_logits)
+    weight_scores = F.softmax(weight_logits, dim=1)
+
+    # Sample binary activations
+    bernoulli_dist = torch.distributions.Bernoulli(probs=activation_probs)
+    sampled_activation = bernoulli_dist.sample()
+    log_probs = bernoulli_dist.log_prob(sampled_activation)
 
     # Ensure at least one classifier is active
-    if activation.sum().item() < 1:
-        # Force the classifier with the highest activation probability to be active
-        max_idx = torch.argmax(activation)
-        activation[0][max_idx] = 1.0
+    if sampled_activation.sum().item() < 1:
+        max_idx = torch.argmax(activation_probs, dim=1)
+        # Clone to avoid in-place ops
+        sampled_activation = sampled_activation.clone()
+        log_probs = log_probs.clone()
+        
+        # Use index_fill for safety
+        sampled_activation[0].index_fill_(0, max_idx, 1.0)
+        log_probs[0].index_fill_(0, max_idx, torch.log(activation_probs[0, max_idx] + 1e-8))
 
-    # Detach and convert to NumPy
-    activation_np = activation.detach().cpu().numpy().flatten()
-    weights_np = weights.detach().cpu().numpy().flatten()
+    # Convert activation & weights to NumPy
+    activation_np = sampled_activation.detach().cpu().numpy().flatten()
+    weights_np = weight_scores.detach().cpu().numpy().flatten()
 
-    # Filter active classifiers and their weights
+    # Filter selected classifiers
     selected = [(clf, weight) for clf, act, weight in zip(base_classifiers, activation_np, weights_np) if act >= 0.5]
 
-    # Normalize selected weights
+    # Normalize weights
     total_weight = sum(w for _, w in selected)
     if total_weight > 0:
         selected = [(clf, w / total_weight) for clf, w in selected]
 
     # Build and evaluate ensemble
     ensemble = EnsemblerClassifier(selected)
-    score = evaluate_ensemble(ensemble, X_val, y_val, np.array([w for _, w in selected]))
+    reward = evaluate_ensemble(ensemble, X_val, y_val, input_params)
 
-    # Convert score to loss (maximize score → minimize -score)
-    loss = -torch.tensor(score, dtype=torch.float32, device=device, requires_grad=True)
+    # Loss = -reward * log_probs + sparsity penalty
+    reward_tensor = torch.tensor(reward, dtype=torch.float32, device=device)
+    activation_count = sampled_activation.sum()
+    sparsity_penalty = sparsity_coeff * activation_count
+    loss = -reward_tensor * log_probs.sum() + sparsity_penalty
 
+    # Backpropagation
     loss.backward()
     optimizer.step()
 
-    return score, loss.item()
+    return reward, loss.item()
+
