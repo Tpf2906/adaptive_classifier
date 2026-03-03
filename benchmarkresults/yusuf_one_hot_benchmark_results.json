@@ -1,0 +1,230 @@
+[
+    {
+        "target_metric": "accuracy",
+        "input_vector": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "selected_classifiers": [
+            "RBFClassifier",
+            "NaiveBayesClassifier",
+            "LogisticRegressionClassifier"
+        ],
+        "selected_weights": [
+            0.2809135317802429,
+            0.3515790104866028,
+            0.36750736832618713
+        ],
+        "benchmark_metrics": {
+            "accuracy": 0.6408060453400504,
+            "recall": 0.6408060453400504,
+            "f1_score": 0.62134890284802,
+            "precision": 0.6188705844178828,
+            "inference_time": 12.25591492652893,
+            "roc_auc": 0.9395378597641412,
+            "topk_accuracy": 0.9153652392947104
+        },
+        "nn_generation_time": 0.12790155410766602
+    },
+    {
+        "target_metric": "f1_score",
+        "input_vector": [
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "selected_classifiers": [
+            "SVMClassifier",
+            "RBFClassifier",
+            "RandomForestClassifierWrapper",
+            "NaiveBayesClassifier",
+            "AdaBoostClassifierWrapper"
+        ],
+        "selected_weights": [
+            0.3214277923107147,
+            0.14681126177310944,
+            0.09024248272180557,
+            0.283427894115448,
+            0.15809057652950287
+        ],
+        "benchmark_metrics": {
+            "accuracy": 0.6272040302267002,
+            "recall": 0.6272040302267002,
+            "f1_score": 0.6096009902850156,
+            "precision": 0.6164103702232169,
+            "inference_time": 16.57071352005005,
+            "roc_auc": 0.9408085430834063,
+            "topk_accuracy": 0.9108312342569269
+        },
+        "nn_generation_time": 0.0020759105682373047
+    },
+    {
+        "target_metric": "precision",
+        "input_vector": [
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "selected_classifiers": [
+            "SVMClassifier",
+            "NaiveBayesClassifier",
+            "LogisticRegressionClassifier",
+            "GBMClassifier"
+        ],
+        "selected_weights": [
+            0.4445365071296692,
+            0.13708075881004333,
+            0.3293651044368744,
+            0.08901765942573547
+        ],
+        "benchmark_metrics": {
+            "accuracy": 0.6478589420654912,
+            "recall": 0.6478589420654912,
+            "f1_score": 0.6270364796295188,
+            "precision": 0.6207626763097729,
+            "inference_time": 6.627950429916382,
+            "roc_auc": 0.9403785403916031,
+            "topk_accuracy": 0.9032745591939546
+        },
+        "nn_generation_time": 0.00044465065002441406
+    },
+    {
+        "target_metric": "recall",
+        "input_vector": [
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "selected_classifiers": [
+            "SVMClassifier",
+            "RBFClassifier",
+            "NaiveBayesClassifier",
+            "DecisionTreeClassifierWrapper"
+        ],
+        "selected_weights": [
+            0.2767622470855713,
+            0.23565854132175446,
+            0.2704344689846039,
+            0.21714474260807037
+        ],
+        "benchmark_metrics": {
+            "accuracy": 0.636272040302267,
+            "recall": 0.636272040302267,
+            "f1_score": 0.6130814472659052,
+            "precision": 0.6182342590932449,
+            "inference_time": 17.60613489151001,
+            "roc_auc": 0.9370419714081037,
+            "topk_accuracy": 0.9042821158690176
+        },
+        "nn_generation_time": 0.00045752525329589844
+    },
+    {
+        "target_metric": "roc_auc",
+        "input_vector": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+        ],
+        "selected_classifiers": [
+            "RBFClassifier",
+            "RandomForestClassifierWrapper",
+            "DecisionTreeClassifierWrapper"
+        ],
+        "selected_weights": [
+            0.3094760477542877,
+            0.3920339047908783,
+            0.29849007725715637
+        ],
+        "benchmark_metrics": {
+            "accuracy": 0.5042821158690176,
+            "recall": 0.5042821158690176,
+            "f1_score": 0.4707028662495003,
+            "precision": 0.4646571514702676,
+            "inference_time": 9.79439401626587,
+            "roc_auc": 0.9284603256134174,
+            "topk_accuracy": 0.8896725440806046
+        },
+        "nn_generation_time": 0.00042819976806640625
+    },
+    {
+        "target_metric": "topk_accuracy",
+        "input_vector": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0
+        ],
+        "selected_classifiers": [
+            "SVMClassifier",
+            "NaiveBayesClassifier",
+            "AdaBoostClassifierWrapper"
+        ],
+        "selected_weights": [
+            0.3145180642604828,
+            0.36200639605522156,
+            0.32347553968429565
+        ],
+        "benchmark_metrics": {
+            "accuracy": 0.563727959697733,
+            "recall": 0.563727959697733,
+            "f1_score": 0.5650774514111441,
+            "precision": 0.5998700902885163,
+            "inference_time": 6.635672092437744,
+            "roc_auc": 0.93575141682887,
+            "topk_accuracy": 0.9128463476070529
+        },
+        "nn_generation_time": 0.0004582405090332031
+    },
+    {
+        "target_metric": "inference_time",
+        "input_vector": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "selected_classifiers": [
+            "GBMClassifier"
+        ],
+        "selected_weights": [
+            1.0
+        ],
+        "benchmark_metrics": {
+            "accuracy": 0.46700251889168765,
+            "recall": 0.46700251889168765,
+            "f1_score": 0.4384078701932947,
+            "precision": 0.43136658709544345,
+            "inference_time": 0.09495806694030762,
+            "roc_auc": 0.7925719522263934,
+            "topk_accuracy": 0.745088161209068
+        },
+        "nn_generation_time": 0.000457763671875
+    }
+]
