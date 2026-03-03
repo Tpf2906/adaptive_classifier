@@ -43,7 +43,25 @@ This directory contains various classifiers that can be trained on the processed
 
 These classifiers are designed to be trained using the features extracted by CLIP and reduced in dimensionality by PCA. The classifiers can be used individually or combined using an ensemble method.
 
-### 5. `requirements.txt`
+### 5. `train_nn.ipynb`
+After the base classifiers are trained, this notebook trains a set of neural network experts on top of their outputs. For each evaluation metric of interest, it trains one expert model, resulting in 7 specialized neural networks (experts) that focus on different metrics.
+
+- **Input**: Predictions or features produced by the classifiers in `classifiers/`.
+- **Output**: 7 trained expert neural networks (one per metric).
+
+### 6. `train_final_nn.ipynb`
+This notebook trains the final meta-learner that combines the outputs of the 7 expert neural networks into a single adaptive classifier that reflects the user's preferences across metrics.
+
+- **Input**: Outputs from the 7 expert neural networks trained in `train_nn.ipynb`.
+- **Output**: A trained meta-learner model that produces the final prediction.
+
+### 7. `test_models/`
+This folder contains notebooks and scripts to evaluate the trained models (base classifiers, expert neural networks, and the meta-learner) on held-out data.
+
+- **Input**: Saved models from the training notebooks and test data.
+- **Output**: Evaluation metrics and comparison plots for the different models.
+
+### 8. `requirements.txt`
 This file lists the necessary Python packages and dependencies needed to run the project. You can install the required packages using:
 
 ```bash

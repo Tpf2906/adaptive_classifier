@@ -1,7 +1,7 @@
 import json
 import numpy as np
 
-FILE_PATH = "full_benchmark_results.json" 
+FILE_PATH = "benchmark_results/full_benchmark_results.json" 
 TIME_KEY = "inference_time"
 
 def find_min_time_value(file_path):
